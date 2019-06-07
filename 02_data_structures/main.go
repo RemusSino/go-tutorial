@@ -28,10 +28,19 @@ func slices() {
 }
 
 func maps() {
+	people := make(map[string]int)
+	people["John"] = 23
+	people["Phoebe"] = 42
+	people["Will"] = 66
+	fmt.Println("People present here are ", people)
 
+	delete(people, "John")
+
+	fmt.Println("John left. Remaining people are ", people)
 }
 
 func main() {
 	arrays()
 	slices()
+	maps()
 }
