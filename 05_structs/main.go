@@ -15,7 +15,7 @@ type Car struct {
 }
 
 type Person struct {
-	Car
+	car     Car
 	name    string
 	age     int
 	country string
@@ -24,7 +24,7 @@ type Person struct {
 func (p Person) myCar() string {
 	stringBuilder.Reset()
 	stringBuilder.WriteString("My car is ")
-	stringBuilder.WriteString(p.color)
+	stringBuilder.WriteString(p.car.color)
 	return stringBuilder.String()
 }
 
@@ -38,10 +38,20 @@ func (p Person) toString() string {
 	return stringBuilder.String()
 }
 
+func (p *Person) setCar(car Car) {
+	p.car = car
+}
+
+func (p *Person) setName(name string) {
+	p.name = name
+	fmt.Println("Change my name to", p.name)
+}
+
 func main() {
 	famillyCar := Car{"Van", "Blue", 7}
 	me := Person{famillyCar, "Remus", 30, "RO"}
 
 	fmt.Println(me.toString())
 	fmt.Println(me.myCar())
+	me.setName("Alex")
 }
