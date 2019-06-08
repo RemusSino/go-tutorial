@@ -8,6 +8,10 @@ import (
 
 var stringBuilder strings.Builder
 
+type Printable interface {
+	toString() string
+}
+
 type Car struct {
 	carType string
 	color   string
@@ -21,10 +25,11 @@ type Person struct {
 	country string
 }
 
-func (p Person) myCar() string {
+func (c Car) toString() string {
 	stringBuilder.Reset()
-	stringBuilder.WriteString("My car is ")
-	stringBuilder.WriteString(p.car.color)
+	stringBuilder.WriteString("The car has ")
+	stringBuilder.WriteString(c.color)
+	stringBuilder.WriteString(" color")
 	return stringBuilder.String()
 }
 
@@ -52,6 +57,11 @@ func main() {
 	me := Person{famillyCar, "Remus", 30, "RO"}
 
 	fmt.Println(me.toString())
-	fmt.Println(me.myCar())
 	me.setName("Alex")
+
+	//polymorphism
+	var printableObject Printable = famillyCar
+	fmt.Println(printableObject.toString())
+	printableObject = me
+	fmt.Println(printableObject.toString())
 }
