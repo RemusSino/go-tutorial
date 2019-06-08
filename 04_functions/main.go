@@ -46,6 +46,11 @@ func is_prime(n int) bool {
 	return true
 }
 
+//multiple return example
+func sum_and_diff(a int, b int) (int, int) {
+	return sum(a, b), a - b
+}
+
 func prime(n int) int {
 	count := 0
 	prime := 0
