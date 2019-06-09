@@ -34,20 +34,43 @@ func fibonacciWg(n int) {
 	wg.Done()
 }
 
-func fibonacciChan(n int, channel chan (int)) {
+func fibonacciChan(n int, channel chan<- (int)) {
 	channel <- fibonacci(n)
 }
 
+func factorial(n int) int {
+	result := 1
+	for i := 1; i <= n; i++ {
+		result = result * i
+	}
+	return result
+}
+
+func factorialChan(n int, channel chan<- (int)) {
+	channel <- factorial(n)
+}
+
 func main() {
+	// fmt.Print(factorial(3))
 	wg.Add(1)
 	fmt.Println("Calculating Fibonacci(100) in goroutine with WaitGroup")
 	go fibonacciWg(100)
 	fmt.Println("Waiting for goroutine to finish...")
 	wg.Wait()
 
-	channel := make(chan int)
+	fibChannel := make(chan int)
 	fmt.Println("Calculating Fibonacci(100) in goroutine with Channel")
-	go fibonacciChan(100, channel)
-	fmt.Println("Fibonnaci(100)=", <-channel)
+	go fibonacciChan(100, fibChannel)
+	factChannel := make(chan int)
+	fmt.Println("Calculating Factorial(10) in goroutine with Channel")
+	go factorialChan(10, factChannel)
 
+	for i := 0; i < 2; i++ {
+		select {
+		case fib := <-fibChannel:
+			fmt.Println("Fibonnaci(100)=", fib)
+		case fact := <-factChannel:
+			fmt.Println("Factorial(10)=", fact)
+		}
+	}
 }
